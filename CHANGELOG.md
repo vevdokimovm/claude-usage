@@ -1,5 +1,9 @@
 # CHANGELOG — claude-usage
 
+## [1.1.0] — 2026-08-26 — Манифест: описание, теги (публичная репа) (MINOR)
+
+Написан MANIFEST.md, дублей нет.
+
 ## [1.0.0] — 2026-08-21 — MVP: three format traps, measured and tested (MINOR)
 
 Level `1.0.0` per `base-repo/00-infrastructure/83-project-maturity-levels.md` §3:
