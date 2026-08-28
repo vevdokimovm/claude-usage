@@ -10,9 +10,11 @@ No dependencies. No network. Nothing leaves your machine.
 ```bash
 python3 cli.py              # newest session in this project
 python3 cli.py --all        # one line per session
+python3 cli.py --csv        # one CSV row per session, to stdout
 python3 cli.py --limits     # rate-limit windows across every log
 python3 cli.py --json       # machine-readable
 python3 tests/test_reader.py
+python3 tests/test_cli.py
 ```
 
 ---
@@ -102,3 +104,13 @@ useful one: what you pay for is **bytes written** to cache, not the ratio.
 `python3 tests/test_reader.py` — 22 assertions on synthetic fixtures, no network
 and no dependency on anyone's real logs. A test that needs your `~/.claude` to
 pass is not a test, it is a demo.
+
+## Структура
+
+<!-- STRUCTURE:AUTO:START -->
+| Папка | Файлов | Что внутри |
+|---|---|---|
+| `claude_usage/` | 3 | TODO — заполнить вручную |
+| `reports/` | 2 | TODO — заполнить вручную |
+| `tests/` | 1 | TODO — заполнить вручную |
+<!-- STRUCTURE:AUTO:END -->

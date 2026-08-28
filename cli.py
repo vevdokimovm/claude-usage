@@ -14,6 +14,7 @@ No dependencies. Nothing leaves your machine.
 from __future__ import annotations
 
 import argparse
+import csv
 import datetime
 import json
 import sys
@@ -40,7 +41,7 @@ def pick(args) -> list[Path]:
     found = list(find_sessions(project=args.project))
     if not found:
         return []
-    return found if (args.all or args.limits or args.list) else found[:1]
+    return found if (args.all or args.csv or args.limits or args.list) else found[:1]
 
 
 def cmd_list(paths: list[Path]) -> int:
@@ -111,6 +112,34 @@ def cmd_all(paths: list[Path]) -> int:
     print(f"\n  {len(rows)} sessions with turns")
     print(c(f"  cost↑ = how much more a turn costs at the top of its context range "
             f"than at the bottom", "d"))
+    return 0
+
+
+CSV_FIELDS = ["session_id", "project", "model", "turns", "max_context", "median_context",
+              "growth_per_turn", "cache_read", "cache_creation", "fresh_input", "output",
+              "thinking", "hit_rate", "cost_growth", "sidechain_turns", "api_errors"]
+
+
+def cmd_csv(paths: list[Path]) -> int:
+    """One row per session — for external analysis (spreadsheet, pandas, whatever).
+    Dict/list-typed fields (models per turn, buckets, drops, limits) don't fit a flat
+    row; `model` here is whichever model saw the most turns, matching `--all`."""
+    writer = csv.DictWriter(sys.stdout, fieldnames=CSV_FIELDS)
+    writer.writeheader()
+    for p in paths:
+        s = summarize(read_session(p))
+        if not s:
+            continue
+        model = max(s.models, key=s.models.get)
+        writer.writerow({
+            "session_id": s.session_id, "project": s.project, "model": model,
+            "turns": s.turns, "max_context": s.max_context,
+            "median_context": s.median_context, "growth_per_turn": round(s.growth_per_turn),
+            "cache_read": s.cache_read, "cache_creation": s.cache_creation,
+            "fresh_input": s.fresh_input, "output": s.output, "thinking": s.thinking,
+            "hit_rate": round(s.hit_rate, 1), "cost_growth": round(s.cost_growth, 2),
+            "sidechain_turns": s.sidechain_turns, "api_errors": s.api_errors,
+        })
     return 0
 
 
@@ -191,6 +220,7 @@ def main() -> int:
     p.add_argument("--project", help="filter sessions by project directory name")
     p.add_argument("--list", action="store_true", help="list available sessions")
     p.add_argument("--all", action="store_true", help="one line per session")
+    p.add_argument("--csv", action="store_true", help="one CSV row per session, to stdout")
     p.add_argument("--limits", action="store_true", help="rate-limit windows")
     p.add_argument("--json", action="store_true", help="machine-readable output")
     a = p.parse_args()
@@ -203,6 +233,8 @@ def main() -> int:
         return cmd_list(paths)
     if a.limits:
         return cmd_limits(paths)
+    if a.csv:
+        return cmd_csv(paths)
     if a.all:
         return cmd_all(paths)
     return cmd_one(paths[0], a.json)

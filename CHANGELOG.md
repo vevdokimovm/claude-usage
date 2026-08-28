@@ -1,5 +1,21 @@
 # CHANGELOG — claude-usage
 
+## [1.2.0] — 2026-08-28 — CSV-экспорт (MINOR)
+
+Закрывает пункт `BOARD.md`: «Export to CSV for external analysis».
+
+### Added
+- `cli.py --csv` — по строке на сессию, в stdout, стандартный `csv`-модуль
+  (без новых зависимостей). Поля: session_id, project, model, turns,
+  max_context, median_context, growth_per_turn, cache_read, cache_creation,
+  fresh_input, output, thinking, hit_rate, cost_growth, sidechain_turns,
+  api_errors.
+- `tests/test_cli.py` — 8 assertions на синтетических фикстурах, без сети
+  и без реальных логов.
+
+Проверено вживую на настоящих логах сессии — корректный CSV с реальными
+числами (7351 ход, ~1M токенов контекста и т.д.).
+
 ## [1.1.1] — 2026-08-26 — Отчёт о ревизии добавлен (reports/revision-2026-08-26.md) (PATCH)
 
 По заказу владельца — каждой ревизуемой репе отдельный отчёт по шаблону finpilot.
