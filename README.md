@@ -11,11 +11,20 @@ No dependencies. No network. Nothing leaves your machine.
 python3 cli.py              # newest session in this project
 python3 cli.py --all        # one line per session
 python3 cli.py --csv        # one CSV row per session, to stdout
+python3 cli.py --record     # append today's sessions to history/sessions.jsonl
 python3 cli.py --limits     # rate-limit windows across every log
 python3 cli.py --json       # machine-readable
 python3 tests/test_reader.py
 python3 tests/test_cli.py
+python3 tests/test_history.py
 ```
+
+Session logs under `~/.claude/projects/` are not durable — they rotate and get
+pruned. `--record` appends a snapshot per session into `history/sessions.jsonl`,
+one row per run (not an upsert — a time series of how a session's cost grew,
+so re-running it later adds a new reading, not a rewrite). Run it periodically
+if you want cost trends over weeks; what isn't captured today can't be
+recovered once the source log is gone.
 
 ---
 

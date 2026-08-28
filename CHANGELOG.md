@@ -1,5 +1,21 @@
 # CHANGELOG — claude-usage
 
+## [1.3.0] — 2026-08-28 — Snapshot history (MINOR)
+
+Закрывает `ROADMAP.md` P1: «Snapshot history» («not recoverable
+retroactively» — снималось первым из оставшихся пунктов).
+
+### Added
+- `claude_usage/history.py` — `record()`/`load_history()`, append-only
+  JSONL в `history/sessions.jsonl`. Не upsert: каждый вызов `--record`
+  добавляет новую строку с текущим состоянием сессии — time series роста
+  стоимости, не единственный «последний» снимок.
+- `cli.py --record` — записать текущие сессии в историю.
+- `tests/test_history.py` — 10 assertions.
+
+Проверено вживую: 63 реальные сессии записаны, повторный прогон добавил
+ещё 63 (126 строк) — подтверждён append, не перезапись.
+
 ## [1.2.0] — 2026-08-28 — CSV-экспорт (MINOR)
 
 Закрывает пункт `BOARD.md`: «Export to CSV for external analysis».

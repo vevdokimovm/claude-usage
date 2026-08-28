@@ -7,6 +7,7 @@ claude-usage — where your Claude Code budget actually goes.
     python3 cli.py --all                # every session, one line each
     python3 cli.py --limits             # rate-limit windows across all logs
     python3 cli.py --json               # machine-readable
+    python3 cli.py --record             # append today's sessions to history/sessions.jsonl
     python3 cli.py path/to/session.jsonl
 
 No dependencies. Nothing leaves your machine.
@@ -21,6 +22,7 @@ import sys
 from pathlib import Path
 
 from claude_usage.analyze import BUCKET, COST, summarize
+from claude_usage.history import record
 from claude_usage.reader import find_sessions, read_session
 
 C = {"h": "\033[96m", "g": "\033[92m", "y": "\033[93m", "r": "\033[91m",
@@ -41,7 +43,7 @@ def pick(args) -> list[Path]:
     found = list(find_sessions(project=args.project))
     if not found:
         return []
-    return found if (args.all or args.csv or args.limits or args.list) else found[:1]
+    return found if (args.all or args.csv or args.record or args.limits or args.list) else found[:1]
 
 
 def cmd_list(paths: list[Path]) -> int:
@@ -143,6 +145,15 @@ def cmd_csv(paths: list[Path]) -> int:
     return 0
 
 
+def cmd_record(paths: list[Path]) -> int:
+    """Append one row per session with turns to `history/sessions.jsonl` — an
+    external store that survives log rotation (`~/.claude/projects/` is not
+    durable). See `claude_usage/history.py`."""
+    written = record(paths)
+    print(c(f"recorded {written} session(s) to history/sessions.jsonl", "g"))
+    return 0
+
+
 def cmd_one(path: Path, as_json: bool) -> int:
     s = read_session(path)
     summ = summarize(s)
@@ -221,6 +232,8 @@ def main() -> int:
     p.add_argument("--list", action="store_true", help="list available sessions")
     p.add_argument("--all", action="store_true", help="one line per session")
     p.add_argument("--csv", action="store_true", help="one CSV row per session, to stdout")
+    p.add_argument("--record", action="store_true",
+                    help="append today's sessions to history/sessions.jsonl (durable store)")
     p.add_argument("--limits", action="store_true", help="rate-limit windows")
     p.add_argument("--json", action="store_true", help="machine-readable output")
     a = p.parse_args()
@@ -235,6 +248,8 @@ def main() -> int:
         return cmd_limits(paths)
     if a.csv:
         return cmd_csv(paths)
+    if a.record:
+        return cmd_record(paths)
     if a.all:
         return cmd_all(paths)
     return cmd_one(paths[0], a.json)
