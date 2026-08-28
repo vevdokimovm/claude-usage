@@ -1,5 +1,13 @@
 # CHANGELOG — claude-usage
 
+## [1.3.1] — 2026-08-28 — README: описание укорочено, «Структура» убрана (PATCH)
+
+Владелец заметил на GitHub, что описание карточки репы обрезается (204
+символа при видимом лимите ~175) — укорочено до 174 на GitHub и в
+`.repo-meta`. README: убран служебный блок «Структура» (внутренний
+артефакт `base-repo`). Заодно исправлено `.repo-meta`: `private=true`
+при факте `PUBLIC` на GitHub.
+
 ## [1.3.0] — 2026-08-28 — Snapshot history (MINOR)
 
 Закрывает `ROADMAP.md` P1: «Snapshot history» («not recoverable
