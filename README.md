@@ -1,5 +1,10 @@
 # claude-usage
 
+<!-- STATUS -->
+> **Сейчас:** `v1.3.2` · 2026-08-28 · README: описание укорочено, «Структура» убрана
+> Открытое — [`ROADMAP.md`](ROADMAP.md) · на владельце — [`TASKS.md`](TASKS.md) · где стоим — [`WATCHLOG.md`](WATCHLOG.md) §0.
+<!-- /STATUS -->
+
 **Where your Claude Code budget actually goes.** Reads the session logs already on
 your disk (`~/.claude/projects/*.jsonl`) and answers the questions `/usage` does not:
 how context grows, what a turn costs at 300K versus at 25K, when your rate limit
@@ -113,3 +118,9 @@ useful one: what you pay for is **bytes written** to cache, not the ratio.
 `python3 tests/test_reader.py` — 22 assertions on synthetic fixtures, no network
 and no dependency on anyone's real logs. A test that needs your `~/.claude` to
 pass is not a test, it is a demo.
+
+## Структура
+
+| Каталог | Что внутри |
+|---|---|
+| `claude_usage/` | Питон-пакет анализатора: разбор логов сессий, агрегация расхода, вывод отчёта |
