@@ -16,8 +16,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from claude_usage.analyze import limit_state, summarize, turn_cost   # noqa: E402
-from claude_usage.reader import Turn, read_session                   # noqa: E402
+from claude-usage.analyze import limit_state, summarize, turn_cost   # noqa: E402
+from claude-usage.reader import Turn, read_session                   # noqa: E402
 
 FAILED: list[str] = []
 

@@ -21,9 +21,9 @@ import json
 import sys
 from pathlib import Path
 
-from claude_usage.analyze import BUCKET, COST, summarize
-from claude_usage.history import record
-from claude_usage.reader import find_sessions, read_session
+from claude-usage.analyze import BUCKET, COST, summarize
+from claude-usage.history import record
+from claude-usage.reader import find_sessions, read_session
 
 C = {"h": "\033[96m", "g": "\033[92m", "y": "\033[93m", "r": "\033[91m",
      "b": "\033[1m", "d": "\033[90m", "x": "\033[0m"}
@@ -148,7 +148,7 @@ def cmd_csv(paths: list[Path]) -> int:
 def cmd_record(paths: list[Path]) -> int:
     """Append one row per session with turns to `history/sessions.jsonl` — an
     external store that survives log rotation (`~/.claude/projects/` is not
-    durable). See `claude_usage/history.py`."""
+    durable). See `claude-usage/history.py`."""
     written = record(paths)
     print(c(f"recorded {written} session(s) to history/sessions.jsonl", "g"))
     return 0

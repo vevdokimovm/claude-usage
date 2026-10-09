@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tests for `claude_usage/history.py` — synthetic fixtures, temp dir instead of
+Tests for `claude-usage/history.py` — synthetic fixtures, temp dir instead of
 `history/`, no network, no real logs.
 """
 from __future__ import annotations
@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from claude_usage.history import load_history, record  # noqa: E402
+from claude-usage.history import load_history, record  # noqa: E402
 
 FAILED: list[str] = []
 

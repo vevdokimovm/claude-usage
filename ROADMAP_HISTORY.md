@@ -8,7 +8,7 @@
 
 ## Вынесено 2026-08-28
 
-- [x] **Snapshot history — closed 28.08.2026.** `claude_usage/history.py`,
+- [x] **Snapshot history — closed 28.08.2026.** `claude-usage/history.py`,
       `cli.py --record`. Appends (not upserts) one row per session with turns
       to `history/sessions.jsonl` — a time series, not a frozen latest-state
       snapshot. Verified live: 63 real sessions recorded, re-running appended
